@@ -3,7 +3,7 @@ import java.util.Random
 class MazeGenerator {
     var target = 0
         set(value) {
-            jumps.ensureKey(field, mutableSetOf()) { i, set ->
+            jumps.ensureKey(field, { mutableSetOf() }) { _, set ->
                 set.add(value)
                 set
             }
@@ -726,7 +726,7 @@ class MazeGenerator {
     }
 }
 
-fun main(args: Array<String>) {
+fun main() {
     val colsArg = System.getenv("cols")
     val cols = colsArg?.toInt() ?: 10
     val rowsArg = System.getenv("rows")
@@ -740,11 +740,8 @@ fun main(args: Array<String>) {
     println(flow)
 }
 
-fun <TKey, TValue> MutableMap<TKey, TValue>.ensureKey(key: TKey, default: TValue? = null, block: (TKey, TValue) -> TValue) {
-    if (default != null && key !in this) {
-        this[key] = default
-    }
-    this[key] = block(key, getValue(key))
+fun <TKey, TValue> MutableMap<TKey, TValue>.ensureKey(key: TKey, default: (TKey) -> TValue, block: (TKey, TValue) -> TValue) {
+    this[key] = block(key, this[key] ?: default(key))
 }
 
 val jumps = mutableMapOf<Int, MutableSet<Int>>()
