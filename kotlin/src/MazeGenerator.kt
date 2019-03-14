@@ -15,10 +15,6 @@ class MazeGenerator {
 
     private fun clear() = result.setLength(0)
 
-    private fun appendNewLine() {
-        result.append("\n")
-    }
-
     private fun append(text: String) {
         result.append(text)
     }
@@ -721,23 +717,19 @@ class MazeGenerator {
             append("+\n")
         }
 
-        val (result, tmpResult) = listOf(StringBuffer(), result)
+        val tmpResult = result
+        result = StringBuffer()
         return tmpResult.toString()
     }
 }
 
 fun main() {
-    val colsArg = System.getenv("cols")
-    val cols = colsArg?.toInt() ?: 10
-    val rowsArg = System.getenv("rows")
-    val rows = rowsArg?.toInt() ?: 10
+    val cols = System.getenv("cols")?.toInt() ?: 10
+    val rows = System.getenv("rows")?.toInt() ?: 10
     val amazing = MazeGenerator()
     val result = amazing.run(cols, rows)
 
-    jumps.forEach { i, set ->
-        println("${set.toString().padEnd(20)} -> $i")
-    }
-    println(flow)
+    println(result)
 }
 
 fun <TKey, TValue> MutableMap<TKey, TValue>.ensureKey(key: TKey, default: (TKey) -> TValue, block: (TKey, TValue) -> TValue) {
