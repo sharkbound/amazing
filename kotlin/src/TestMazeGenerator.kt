@@ -1,8 +1,7 @@
 // Copyright 2003, William C. Wake. All rights reserved.
 
 import junit.framework.TestCase
-
-import java.util.Random
+import java.util.*
 
 class TestMazeGenerator : TestCase() {
     fun testSeed0size15x20() {

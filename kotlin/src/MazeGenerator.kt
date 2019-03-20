@@ -3,8 +3,8 @@ import java.util.Random
 class MazeGenerator {
     var target = 0
         set(value) {
-            jumps.ensureKey(value, { mutableSetOf() }) { _, set ->
-                set.add(field)
+            jumps.ensureKey(field, mutableSetOf()) { i, set ->
+                set.add(value)
                 set
             }
             flow.add(field)
@@ -14,6 +14,10 @@ class MazeGenerator {
     var result = StringBuffer()
 
     private fun clear() = result.setLength(0)
+
+    private fun appendNewLine() {
+        result.append("\n")
+    }
 
     private fun append(text: String) {
         result.append(text)
@@ -35,8 +39,8 @@ class MazeGenerator {
         var x = nextInt(width)
 
         // 130:170
-        repeat(width) { i ->
-            append(if (i + 1 == x) "+  " else "+--")
+        (1..width).forEach {
+            append(if (it == x) "+  " else "+--")
         }
 
         // 180
@@ -275,23 +279,34 @@ class MazeGenerator {
                 }
 
                 530 -> {
-                    target = when {
-                        s != height -> 560
-                        z == 1 -> 590
-                        else -> {
-                            q = 1
-                            570
-                        }
-                    }
+                    target = if (s != height)
+                        560
+                    else
+                        540
+                }
+
+                540 -> {
+                    target = if (z == 1)
+                        590
+                    else
+                        550
+                }
+
+                550 -> {
+                    q = 1
+                    target = 570
                 }
 
                 560 -> {
                     target = if (wArray[r][s + 1] != 0)
                         590
-                    else {
-                        x = nextInt(2)
-                        580
-                    }
+                    else
+                        570
+                }
+
+                570 -> {
+                    x = nextInt(2)
+                    target = 580
                 }
 
                 580 -> {
@@ -391,12 +406,17 @@ class MazeGenerator {
                 }
 
                 720 -> {
-                    target = when {
-                        s != height -> 750
-                        z == 1 -> 780
-                        else -> 740
-                    }
+                    target = if (s != height)
+                        750
+                    else
+                        730
+                }
 
+                730 -> {
+                    target = if (z == 1)
+                        780
+                    else
+                        740
                 }
 
                 740 -> {
@@ -607,17 +627,9 @@ class MazeGenerator {
                 }
 
                 1090 -> {
-                    target = if (q == 1) {
-                        z = 1
-                        if (values[r][s] == 0) {
-                            values[r][s] = 1
-                            q = 0
-                            r = 1
-                            s = 1
-                            260
-                        } else
-                            1170
-                    } else
+                    target = if (q == 1)
+                        1150
+                    else
                         1100
                 }
 
@@ -652,19 +664,31 @@ class MazeGenerator {
                     target = 270
                 }
 
+                1150 -> {
+                    z = 1
+                    target = 1160
+                }
+
+                1160 -> {
+                    target = if (values[r][s] == 0)
+                        1180
+                    else
+                        1170
+                }
+
                 1170 -> {
                     values[r][s] = 3
                     q = 0
                     target = 1190
                 }
 
-//                1180 -> {
-//                    values[r][s] = 1
-//                    q = 0
-//                    r = 1
-//                    s = 1
-//                    target = 260
-//                }
+                1180 -> {
+                    values[r][s] = 1
+                    q = 0
+                    r = 1
+                    s = 1
+                    target = 260
+                }
 
                 1190 -> {
                     target = 210
@@ -697,33 +721,30 @@ class MazeGenerator {
             append("+\n")
         }
 
-        val tmpResult = result
-        result = StringBuffer()
+        val (result, tmpResult) = listOf(StringBuffer(), result)
         return tmpResult.toString()
     }
 }
 
-fun main() {
-    val cols = System.getenv("cols")?.toInt() ?: 10
-    val rows = System.getenv("rows")?.toInt() ?: 10
+fun main(args: Array<String>) {
+    val colsArg = System.getenv("cols")
+    val cols = colsArg?.toInt() ?: 10
+    val rowsArg = System.getenv("rows")
+    val rows = rowsArg?.toInt() ?: 10
     val amazing = MazeGenerator()
     val result = amazing.run(cols, rows)
 
-    val once = flow.filter { i -> flow.count { it == i } == 1 }.toSet()
-    var prev = -2
-
-    for (item in flow) {
-        if (item in once) {
-            println("$item was jumped to from $prev")
-        }
-        prev = item
+    jumps.forEach { i, set ->
+        println("${set.toString().padEnd(20)} -> $i")
     }
     println(flow)
-//    println(result)
 }
 
-fun <TKey, TValue> MutableMap<TKey, TValue>.ensureKey(key: TKey, default: (TKey) -> TValue, block: (TKey, TValue) -> TValue) {
-    this[key] = block(key, this[key] ?: default(key))
+fun <TKey, TValue> MutableMap<TKey, TValue>.ensureKey(key: TKey, default: TValue? = null, block: (TKey, TValue) -> TValue) {
+    if (default != null && key !in this) {
+        this[key] = default
+    }
+    this[key] = block(key, getValue(key))
 }
 
 val jumps = mutableMapOf<Int, MutableSet<Int>>()
