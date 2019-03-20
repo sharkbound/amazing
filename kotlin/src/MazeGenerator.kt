@@ -656,10 +656,8 @@ class MazeGenerator {
 }
 
 fun main(args: Array<String>) {
-    val colsArg = System.getenv("cols")
-    val cols = colsArg?.toInt() ?: 10
-    val rowsArg = System.getenv("rows")
-    val rows = rowsArg?.toInt() ?: 10
+    val cols = System.getenv("cols")?.toInt() ?: 10
+    val rows = System.getenv("rows")?.toInt() ?: 10
     val amazing = MazeGenerator()
     val result = amazing.run(cols, rows)
 
