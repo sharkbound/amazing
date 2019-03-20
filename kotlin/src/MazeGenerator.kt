@@ -56,7 +56,7 @@ class MazeGenerator {
         target = 270
 
 
-        loop@ while (true) {
+        while (target != -1) {
             when (target) {
                 210 -> {
                     target = if (r != width)
@@ -397,7 +397,7 @@ class MazeGenerator {
                 720 -> {
                     target = when {
                         s != height -> 750
-                        z == 1 -> 780
+                        z == 1 -> 980
                         else -> 740
                     }
                 }
@@ -409,7 +409,7 @@ class MazeGenerator {
 
                 750 -> {
                     target = if (wArray[r][s + 1] != 0)
-                        780
+                        980
                     else
                         760
                 }
@@ -423,12 +423,8 @@ class MazeGenerator {
                     target = when (x) {
                         1 -> 980
                         2 -> 1090
-                        else -> 780
+                        else -> 980
                     }
-                }
-
-                780 -> {
-                    target = 980
                 }
 
                 790 -> {
@@ -519,7 +515,7 @@ class MazeGenerator {
                 }
 
                 930 -> {
-                    target = 1190
+                    target = 210
                 }
 
                 940 -> {
@@ -536,7 +532,7 @@ class MazeGenerator {
 
                 960 -> {
                     target = if (c == width * height + 1)
-                        1200
+                        -1
                     else
                         970
                 }
@@ -560,7 +556,7 @@ class MazeGenerator {
                     values[r][s - 1] = 1
                     s--
                     target = if (c == width * height + 1)
-                        1200
+                        -1
                     else
                         1010
                 }
@@ -600,7 +596,7 @@ class MazeGenerator {
 
                 1070 -> {
                     target = if (c == width * height + 1)
-                        1200
+                        -1
                     else
                         1080
                 }
@@ -648,28 +644,15 @@ class MazeGenerator {
                 1130 -> {
                     s++
                     target = if (c == height * width + 1)
-                        1200
+                        -1
                     else
-                        1140
-                }
-
-                1140 -> {
-                    target = 270
+                        270
                 }
 
                 1170 -> {
                     values[r][s] = 3
                     q = 0
-                    target = 1190
-                }
-
-                1190 -> {
                     target = 210
-                }
-
-                1200 -> {
-                    target = -1
-                    break@loop
                 }
             }
         }
