@@ -571,11 +571,7 @@ class MazeGenerator {
                     target = if (c == width * height + 1)
                         -1
                     else
-                        1080
-                }
-
-                1080 -> {
-                    target = 600
+                        600
                 }
 
                 1090 -> {
@@ -640,21 +636,23 @@ class MazeGenerator {
             append("+\n")
         }
 
-        val (result, tmpResult) = listOf(StringBuffer(), result)
-        return tmpResult.toString()
+        val ret = result.toString()
+        result.setLength(0)
+        return ret
     }
 }
 
-fun main(args: Array<String>) {
+fun main() {
     val cols = System.getenv("cols")?.toInt() ?: 10
     val rows = System.getenv("rows")?.toInt() ?: 10
     val amazing = MazeGenerator()
     val result = amazing.run(cols, rows)
 
-    jumps.forEach { i, set ->
-        println("${set.toString().padEnd(20)} -> $i")
-    }
-    println(flow)
+    println(result)
+//    jumps.forEach { i, set ->
+//        println("${set.toString().padEnd(20)} -> $i")
+//    }
+//    println(flow)
 }
 
 fun <TKey, TValue> MutableMap<TKey, TValue>.ensureKey(key: TKey, default: (TKey) -> TValue, block: (TKey, TValue) -> TValue) {
