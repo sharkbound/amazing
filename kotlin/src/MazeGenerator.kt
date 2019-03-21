@@ -546,20 +546,16 @@ class MazeGenerator {
 
                 1030 -> {
                     c++
-                    target = if (values[r][s] == 0)
-                        1050
-                    else
+                    target = if (values[r][s] == 0) {
+                        values[r][s] = 2
+                        r++
+                        1070
+                    } else
                         1040
                 }
 
                 1040 -> {
                     values[r][s] = 3
-                    target = 1070
-                    r++
-                }
-
-                1050 -> {
-                    values[r][s] = 2
                     target = 1070
                     r++
                 }
