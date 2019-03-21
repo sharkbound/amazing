@@ -554,17 +554,14 @@ class MazeGenerator {
 
                 1040 -> {
                     values[r][s] = 3
-                    target = 1060
+                    target = 1070
+                    r++
                 }
 
                 1050 -> {
                     values[r][s] = 2
-                    target = 1060
-                }
-
-                1060 -> {
-                    r++
                     target = 1070
+                    r++
                 }
 
                 1070 -> {
