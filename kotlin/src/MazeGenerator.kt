@@ -588,8 +588,11 @@ class MazeGenerator {
                                 r = 1
                                 s = 1
                                 260
-                            } else
-                                1170
+                            } else {
+                                values[r][s] = 3
+                                q = 0
+                                210
+                            }
                         }
                         else -> 1100
                     }
@@ -613,12 +616,6 @@ class MazeGenerator {
                         -1
                     else
                         270
-                }
-
-                1170 -> {
-                    values[r][s] = 3
-                    q = 0
-                    target = 210
                 }
             }
         }
