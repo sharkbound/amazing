@@ -146,9 +146,10 @@ class MazeGenerator {
                         950
                     } else if (x == 2)
                         980
-                    else if (x == 3)
-                        1020
-                    else
+                    else if (x == 3) {
+                        wArray[r + 1][s] = c
+                        1030
+                    } else
                         350
                 }
 
@@ -261,7 +262,10 @@ class MazeGenerator {
                             wArray[r - 1][s] = c
                             950
                         }
-                        2 -> 1020
+                        2 -> {
+                            wArray[r + 1][s] = c
+                            1030
+                        }
                         3 -> 1090
                         else -> 510
                     }
@@ -276,9 +280,10 @@ class MazeGenerator {
                     target = if (x == 1) {
                         wArray[r - 1][s] = c
                         950
-                    } else if (x == 2)
-                        1020
-                    else
+                    } else if (x == 2) {
+                        wArray[r + 1][s] = c
+                        1030
+                    } else
                         530
                 }
 
@@ -379,9 +384,10 @@ class MazeGenerator {
                 690 -> {
                     target = if (x == 1)
                         980
-                    else if (x == 2)
-                        1020
-                    else if (x == 3)
+                    else if (x == 2) {
+                        wArray[r + 1][s] = c
+                        1030
+                    } else if (x == 3)
                         1090
                     else {
                         x = nextInt(2)
@@ -392,7 +398,10 @@ class MazeGenerator {
                 710 -> {
                     target = when (x) {
                         1 -> 980
-                        2 -> 1020
+                        2 -> {
+                            wArray[r + 1][s] = c
+                            1030
+                        }
                         else -> 720
                     }
                 }
@@ -449,9 +458,10 @@ class MazeGenerator {
                 }
 
                 820 -> {
-                    target = if (z == 1)
-                        1020
-                    else {
+                    target = if (z == 1) {
+                        wArray[r + 1][s] = c
+                        1030
+                    } else {
                         q = 1
                         c++
                         1000
@@ -459,9 +469,10 @@ class MazeGenerator {
                 }
 
                 840 -> {
-                    target = if (wArray[r][s + 1] != 0)
-                        1020
-                    else
+                    target = if (wArray[r][s + 1] != 0) {
+                        wArray[r + 1][s] = c
+                        1030
+                    } else
                         850
                 }
 
@@ -473,7 +484,10 @@ class MazeGenerator {
                 860 -> {
                     target = when (x) {
                         2 -> 1090
-                        else -> 1020
+                        else -> {
+                            wArray[r + 1][s] = c
+                            1030
+                        }
                     }
                 }
 
@@ -537,11 +551,6 @@ class MazeGenerator {
                 1010 -> {
                     q = 0
                     target = 270
-                }
-
-                1020 -> {
-                    wArray[r + 1][s] = c
-                    target = 1030
                 }
 
                 1030 -> {
