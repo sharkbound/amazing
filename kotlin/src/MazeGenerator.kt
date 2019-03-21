@@ -598,20 +598,13 @@ class MazeGenerator {
                 1100 -> {
                     wArray[r][s + 1] = c
                     c++
-                    target = if (values[r][s] == 0)
-                        1120
-                    else
-                        1110
-                }
-
-                1110 -> {
-                    values[r][s] = 3
-                    target = 1130
-                }
-
-                1120 -> {
-                    values[r][s] = 1
-                    target = 1130
+                    target = if (values[r][s] == 0) {
+                        values[r][s] = 1
+                        1130
+                    } else {
+                        values[r][s] = 3
+                        1130
+                    }
                 }
 
                 1130 -> {
